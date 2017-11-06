@@ -1,0 +1,522 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reo framework</title>
+
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css">
+  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script> <!-- Or any version of JQuery -->
+  <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+  <script src='https://cdn.rawgit.com/ydotmalik/reo/v0.1/src/reo.min.js'></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <link rel='stylesheet' href='https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css'>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109604440-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109604440-1');
+</script>
+
+</head>
+
+<style>
+.dyn-content {
+  height: 150px;
+  width: 280px;
+  border: 1px solid black;
+  cursor: pointer;
+  padding: 10px;
+}
+
+#loader {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /*background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0, 0.6);*/
+  visibility: hidden;
+  /*position: relative;
+  margin: auto;*/
+  display: table;
+}
+
+#loader > div {
+  width: 100%;
+  height: 100%;
+  background-image: url('ajax-loader.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;  
+}
+
+.demo-part {
+  display: -webkit-flex;
+  display: flex;
+}
+
+pre {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+button {
+  margin-bottom: 10px;
+}
+
+/*#github-repo {
+  position: absolute;
+  top: 0;
+  right: 0;
+}*/
+
+
+/*********** Mobile specific ***************/
+@media screen and (max-width: 480px) {
+.demo-part {
+  flex-direction: column;
+}
+
+.demo-part > div {
+  margin-bottom: 10px;
+}
+
+#main-content {
+  position: relative;
+  top: 40px;
+}
+
+}
+
+
+
+/********** Desktop specific **********/
+@media screen and (min-width: 481px) {
+.demo-part {
+  justify-content: center;
+}
+
+.demo-part > div {
+  margin-right: 10px;
+}
+
+#wrapper {
+  padding-right: 20%;
+  padding-left: 20%;
+}
+
+}
+
+</style>
+
+<body>
+
+<div id='wrapper'>
+
+<!--<a id='github-repo' href='https://github.com/ydotmalik/reo'>
+  <img src='GitHub_Logo.png' width='100px'/>
+</a>-->
+<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+<div id='main-content'>
+
+<div id='loader'>
+  <div></div>
+</div>
+
+<script>
+$(document).ready(function() {
+  $('xmp').wrap('<pre class="prettyprint"></pre>');
+
+  $('pre').each(function() {
+    PR.prettyPrint();
+  });
+
+  $('button').button();
+});
+</script>
+
+<h1>Reo framework</h1>
+
+<p>The Reo (pronounced "rio") framework allows you to develop single page web applications without using any JavaScript.  It consists of one JS file.
+It can be used to create a single page app in conjunction with a framework like Django or it can be used with static HTML.</p>
+
+<p>Here are some examples that show some features of Reo.  All the attributes beginning with <strong><code>data-reo</code></strong> are specific to Reo and are used by it.
+ Head over to the <a href='https://github.com/ydotmalik/reo'>github page</a> to learn how to fully use it now!</p>
+
+<hr>
+
+<p>The content from <code>content.html</code> is loaded into the div upon clicking the div</p>
+
+<div class='demo-part'>
+<div>
+
+<xmp>
+<div
+  data-reo-event='click'
+  data-reo-get-url='content.html'>
+  <p>Click to load dynamic content</p>
+</div>
+
+---
+content.html:
+<p>Some content from the server.
+  This could have been dynamic content,
+  such as a Django view.</p>
+
+</xmp>
+</div>
+
+<div>
+  <div
+    class='dyn-content'
+    data-reo-event='click'
+    data-reo-get-url='content.html'>
+    <p>Click to load dynamic content</p>
+  </div>
+</div>
+
+</div>
+
+<hr>
+
+<p>This example loads content into another div after clicking on the anchor tag</p>
+
+<div class='demo-part'>
+
+<div>
+<xmp>
+<button
+  type='button'
+  data-reo-load-to='load-here'
+  data-reo-get-url='content.html'
+  data-reo-event='click'>Click to load dynamic content</button>
+
+<div id='load-here'></div>
+</xmp>
+</div>
+
+<div>
+  <button
+    type='button'
+    data-reo-event='click'
+    data-reo-get-url='content.html'
+    data-reo-load-to='load-here'>Click to load dynamic content</button>
+  <div id='load-here' class='dyn-content'></div>
+</div>
+
+</div>
+
+<hr>
+
+<p>This example is similar to the above except that it appends content</p>
+
+<div class='demo-part'>
+
+<div>
+<xmp>
+<button
+  type='button'
+  data-reo-event='click'
+  data-reo-get-url='content.html'
+  data-reo-append-to='append-here'>Click to load append content</button>
+
+<div id='append-here'>
+  <p>Exiting content</p>
+</div>
+</xmp>
+</div>
+
+<div>
+  <button
+    type='button'
+    data-reo-event='click'
+    data-reo-get-url='content.html'
+    data-reo-append-to='append-here'>Click to load append content</button>
+  <div id='append-here' class='dyn-content'>
+    <p>Existing content</p>
+  </div>
+</div>
+
+</div>
+
+<hr>
+
+<p>You can also send POST requests.  You can load whatever response the POST request returns into a div in the same
+  manner as above.</p>
+
+<div class='demo-part'>
+
+<div>
+<div>
+<xmp>
+<form id='test-form'>
+  <input
+    type='text'
+    name='field1'/><br/>
+  <input
+    type='text'
+    name='field2'/>
+</form>
+
+<a
+  href='#'
+  data-reo-event='click'
+  data-reo-post-url='form_handler.php'
+  data-reo-load-to='form-response'
+  data-reo-form='test-form'>Submit form</a>
+
+<div id='form-response'>
+</div>
+</xmp>
+</div>
+</div>
+
+<div>
+  <form id='test-form'>
+    <input type='text' placeholder="Enter something" name='field1' maxlength='5'/><br/>
+    <input type='text' placeholder="Enter something" name='field2' maxlength='5'/>
+  </form>
+
+  <a
+    href='#'
+    style='display: inline-block; margin-top: 10px; margin-bottom: 10px;'
+    data-reo-event='click'
+    data-reo-post-url='http://reo-example.us-east-2.elasticbeanstalk.com/form_handler.php'
+    data-reo-load-to='form-response'
+    data-reo-form='test-form'>Submit form</a>
+  <div id='form-response' class='dyn-content'>
+  </div>
+</div>
+
+</div>
+
+<hr>
+
+<p>Reo can also manage displaying a loader.  You just have to provide the element with the loader.</p>
+
+<div class='demo-part'>
+
+<div>
+<xmp>
+<button
+  type='button'
+  data-reo-event='click'
+  data-reo-get-url='long_load.php'
+  data-reo-append-to='long-load'
+  data-reo-loader-elem='loader'>Click to display a loader</button>
+
+<div id='long-load'></div>
+
+<div id='loader'></div>
+</xmp>
+</div>
+
+<div>
+  <button
+    type='button'
+    data-reo-event='click'
+    data-reo-get-url='http://reo-example.us-east-2.elasticbeanstalk.com/long_load.php'
+    data-reo-append-to='long-load'
+    data-reo-loader-elem='loader'>Click to display a loader</button>
+  <div id='long-load' class='dyn-content'>
+    <p>Element #loader contains loader animation</p>
+  </div>
+</div>
+
+</div>
+
+<hr>
+
+<p>One common use case is to open a dialog with dynamic content.</p>
+
+<div class='demo-part'>
+
+<div>
+<xmp>
+<script>
+$(document).ready(function() {
+  $( "#dialog" ).dialog({
+    autoOpen: false,
+    modal: true,
+  });
+});
+</script>
+
+<button
+  type='button'
+  data-reo-event='click'
+  data-reo-get-url='content.html'
+  data-reo-load-to='dialog'
+  data-reo-post-func='$( "#dialog" ).dialog( "open" );'>
+    Open dialog with content from the server</button>
+
+<div id="dialog" title="Basic dialog">
+</div>
+</xmp>
+</div>
+
+<div>
+  <script>
+  $(document).ready(function() {
+    $( "#dialog" ).dialog({
+      autoOpen: false,
+      modal: true,
+    });
+  });
+  </script>
+
+  <button
+    type='button'
+    data-reo-event='click'
+    data-reo-get-url='content.html'
+    data-reo-load-to='dialog'
+    data-reo-post-func='$( "#dialog" ).dialog( "open" );'>Open dialog with content from the server</button>
+  <div id="dialog" title="Basic dialog">
+  </div>
+</div>
+
+</div>
+
+<hr>
+
+<p>Or load the complete dialog from the server.</p>
+
+<div class='demo-part'>
+
+<div>
+<xmp>
+<button
+  type='button'
+  data-reo-event='click'
+  data-reo-get-url='dialog.html'
+  data-reo-load-to='dialog-wrap'>Get the complete dialog from the server</button>
+
+<div id="dialog-wrap">
+</div>
+
+dialog.html:
+
+<script>
+$(document).ready(function() {
+  $( "#dialog2" ).dialog({
+    modal: true,
+  });
+});
+</script>
+
+<div id='dialog2'>
+  <p>A different way of loading a dialog</p>
+</div>
+</xmp>
+</div>
+
+<div>
+  <button
+    type='button'
+    data-reo-event='click'
+    data-reo-get-url='dialog.html'
+    data-reo-load-to='dialog-wrap'>Get the complete dialog from the server</button>
+  <div id="dialog-wrap">
+  </div>
+</div>
+
+</div>
+
+<hr>
+
+<p>You can also modify page's title, URL, or both.</p>
+
+<div class='demo-part'>
+
+<div>
+<xmp>
+<button
+  type='button'
+  data-reo-event='click'
+  data-reo-get-url='dialog_page.html'
+  data-reo-load-to='dialog-page'
+  data-reo-page-title='Dialog page'
+  data-reo-page-url='dialog-page'>Open dialog with a new URL</button>
+
+<div id='dialog-page'>
+</div>
+</xmp>
+</div>
+
+<div>
+  <button
+    type='button'
+    data-reo-event='click'
+    data-reo-get-url='dialog_page.html'
+    data-reo-load-to='dialog-page'
+    data-reo-page-title='Dialog page'
+    data-reo-page-url='dialog-page'>Open dialog with a new URL</button>
+
+  <div id='dialog-page'>
+  </div>
+</div>
+
+</div>
+
+<hr>
+
+<p>After loading an element, you can also trigger a chain of loading other elements.</p>
+
+<div class='demo-part'>
+
+<div>
+<xmp>
+<button
+  type='button'
+  data-reo-event='click'
+  data-reo-get-url='content.html'
+  data-reo-load-to='first-load'
+  data-reo-trigger='trigger'>Trigger a chain of loads</button>
+
+<div id='first-load' class='dyn-content'>
+</div>
+
+<div
+  id='trigger'
+  data-reo-get-url='triggered_content.html'>
+</div>
+</xmp>
+</div>
+
+<div>
+  <button
+    type='button'
+    data-reo-event='click'
+    data-reo-get-url='content.html'
+    data-reo-load-to='first-load'
+    data-reo-trigger='trigger'>Trigger a chain of loads</button>
+  <div id='first-load' class='dyn-content'>
+  </div>
+
+  <div id='trigger' class='dyn-content' data-reo-get-url='triggered_content.html'>
+  </div>
+</div>
+
+</div>
+
+<hr>
+
+<p>There's more to learn from Reo. Go the <a href='https://github.com/ydotmalik/reo'>github page</a> to start using it today.</p>
+
+</div> <!-- main content -->
+
+</div> <!-- wrapper -->
+
+</body>
+
+</html>
